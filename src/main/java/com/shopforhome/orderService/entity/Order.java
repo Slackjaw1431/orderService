@@ -25,9 +25,9 @@ import lombok.Setter;
 public class Order {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "order_id")
+	private Long orderId;
 
 	@Column(name = "date_created")
 	private String dateCreated;
@@ -41,6 +41,9 @@ public class Order {
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	private Set<OrderItem> orderItems = new HashSet<>();
 
+	public Order() {
+	}
+
 	public void add(OrderItem item) {
 
 		if (item != null) {
@@ -51,6 +54,14 @@ public class Order {
 			orderItems.add(item);
 			item.setOrder(this);
 		}
+	}
+
+	public Order(Long orderId, String dateCreated, String userId, double total, Set<OrderItem> orderItems) {
+		this.orderId = orderId;
+		this.dateCreated = dateCreated;
+		this.userId = userId;
+		this.total = total;
+		this.orderItems = orderItems;
 	}
 
 }

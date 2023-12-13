@@ -35,6 +35,10 @@ public class OrderDeserializer extends StdDeserializer<Order> {
 		String dateCreated = node.get("dateCreated").asText();
 
 		Set<OrderItem> items = new HashSet<>();
+		Order order = new Order();
+		order.setUserId(userId);
+		order.setTotal(total);
+		
 		JsonNode productsNode = node.get("products");
 		if (productsNode != null && productsNode.isArray()) {
 			for (JsonNode productNode : productsNode) {
@@ -42,26 +46,24 @@ public class OrderDeserializer extends StdDeserializer<Order> {
 				int quantity = productNode.get("quantity").asInt();
 				String name = productNode.get("name").asText();
 				BigDecimal unitPrice = productNode.get("unitPrice").decimalValue();
-				System.out.println(id + quantity + name + unitPrice);
+//				System.out.println(id + quantity + name + unitPrice);
 				OrderItem item = new OrderItem();
-				item.setId(id);
+//				item.setOrderItemId(id);
+				item.setProductId(id);
 				item.setQuantity(quantity);
 				item.setName(name);
 				item.setUnitPrice(unitPrice);
-				System.out.println(item.getId());
-				System.out.println(item.getName());
+				item.setOrder(order);
+//				System.out.println(item.getOrderItemId());
+//				System.out.println(item.getName());
 
 				items.add(item);
 			}
 		}
-		items.forEach(System.out::println);
-		System.out.println(items.size());
-
-		Order order = new Order();
-		order.setUserId(userId);
-		order.setTotal(total);
+		
 		order.setDateCreated(dateCreated);
 		order.setOrderItems(items);
+//		System.out.println(order.getOrderId());
 
 		return order;
 	}

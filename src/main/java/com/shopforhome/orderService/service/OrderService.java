@@ -31,6 +31,7 @@ public class OrderService {
 
 	@Transactional
 	public Order createOrder(Order order) {
+		em.persist(order);
 		return orderRepository.save(order);
 	}
 
